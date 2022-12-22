@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import './App.css';
 import {TaskType, Todolist} from './Todolist';
 import {v1} from 'uuid';
+import AddItemForm from "./AddItemForm";
 
 export type FilterValuesType = "all" | "active" | "completed";
 type TodolistType = {
@@ -84,9 +85,25 @@ function App() {
         // засетаем в стейт копию объекта, чтобы React отреагировал перерисовкой
         setTasks({...tasks});
     }
+    function addTodolist(title: string) {
+        let newTodolistId = v1()
+        let newTodolist: TodolistType = {id: newTodolistId, title: title, filter: 'all'}
+        setTodolists([newTodolist, ...todolists])
+        setTasks({...tasks, [newTodolistId]: []} )
+    }
+    function onChangeTitleHandler(todolistId:string, id: string, newTitle: string) {
+        let todolistTasks = tasks[todolistId];
+        let task = todolistTasks.find(t => t.id === id);
+        if (task) {
+            task.title = newTitle;
+            setTasks({...tasks});
+        }
+
+    }
 
     return (
         <div className="App">
+            <AddItemForm addItem={addTodolist}/>
             {
                 todolists.map(tl => {
                     let allTodolistTasks = tasks[tl.id];
@@ -110,6 +127,7 @@ function App() {
                         changeTaskStatus={changeStatus}
                         filter={tl.filter}
                         removeTodolist={removeTodolist}
+                        onChange={onChangeTitleHandler}
                     />
                 })
             }
