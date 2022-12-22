@@ -98,7 +98,14 @@ function App() {
             task.title = newTitle;
             setTasks({...tasks});
         }
-
+    }
+    function onChangeTodoTitle(todolistId:string, newTitle: string) {
+        // setTodolists(todolists.map(tl => tl.id === todolistId ? {...tl, title: newTitle} : tl))
+        let todolist = todolists.find(tl => tl.id === todolistId);
+        if (todolist) {
+            todolist.title = newTitle;
+            setTodolists([...todolists]);
+        }
     }
 
     return (
@@ -128,6 +135,7 @@ function App() {
                         filter={tl.filter}
                         removeTodolist={removeTodolist}
                         onChange={onChangeTitleHandler}
+                        onChangeTodoTitle={onChangeTodoTitle}
                     />
                 })
             }

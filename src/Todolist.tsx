@@ -19,6 +19,7 @@ type PropsType = {
     changeTaskStatus: (id: string, isDone: boolean, todolistId: string) => void
     removeTodolist: (id: string) => void
     onChange: (todolistId:string, id: string, newTitle: string) => void
+    onChangeTodoTitle: (todolistId:string, newTitle: string) => void
     filter: FilterValuesType
 }
 
@@ -54,9 +55,11 @@ export function Todolist(props: PropsType) {
     const onAllClickHandler = () => props.changeFilter("all", props.id);
     const onActiveClickHandler = () => props.changeFilter("active", props.id);
     const onCompletedClickHandler = () => props.changeFilter("completed", props.id);
+    const onChangeTitleHandler = (newTitle: string) => props.onChangeTodoTitle(props.id, newTitle)
 
     return <div>
-        <h3> {props.title}
+        <h3> <EditableSpan value={props.title} onChange={onChangeTitleHandler}/>
+            {/*{props.title}*/}
             <button onClick={removeTodolist}>x</button>
         </h3>
         {/*<div>*/}
